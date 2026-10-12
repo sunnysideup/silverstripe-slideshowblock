@@ -1,0 +1,12 @@
+---
+Name: slideshowblock
+---
+Sunnysideup\SlideShowBlock\Blocks\SlideShowBlock:
+  # The composer name used to find this module's CSS and JS.
+  # Change it if you copy the module into app/ or rename it.
+  resource_module: 'sunnysideup/silverstripe-slideshow-block'
+  # Leave empty to offer every slide type, or list the classes editors may add.
+  allowed_slide_classes: []
+
+Sunnysideup\SlideShowBlock\Tasks\SlideShowBlockImportTask:
+  default_file: 'sunnysideup/silverstripe-slideshow-block:_content/ship-shape-hosting.yml'

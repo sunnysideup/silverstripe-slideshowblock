@@ -1,0 +1,31 @@
+// Shared breakpoint + helpers for the slide show and its slide types.
+// Colours, radii and fonts are CSS custom properties (see SlideShowBlock.scss)
+// so a theme can restyle the block without recompiling.
+
+$deck-min: 48rem; // from here up the slides become a horizontal deck
+
+@mixin deck {
+    @media (min-width: $deck-min) {
+        @content;
+    }
+}
+
+@mixin stacked {
+    @media (max-width: ($deck-min - 0.01rem)) {
+        @content;
+    }
+}
+
+// Styles that only apply once the JS has turned the block into a deck.
+@mixin enhanced {
+    .slideshow.is-enhanced & {
+        @content;
+    }
+}
+
+// … and only while this slide is NOT the visible one.
+@mixin enhanced-inactive {
+    .slideshow.is-enhanced .slideshow-slide:not(.is-active) & {
+        @content;
+    }
+}

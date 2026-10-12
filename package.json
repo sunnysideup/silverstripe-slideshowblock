@@ -1,0 +1,14 @@
+{
+    "name": "silverstripe-slideshow-block",
+    "private": true,
+    "description": "Builds client/dist from client/src.",
+    "scripts": {
+        "build:css": "sass client/src/scss:client/dist/css --style=compressed --no-source-map",
+        "build:js": "node -e \"require('fs').cpSync('client/src/js','client/dist/js',{recursive:true})\"",
+        "build": "npm run build:css && npm run build:js",
+        "watch": "sass --watch client/src/scss:client/dist/css --no-source-map"
+    },
+    "devDependencies": {
+        "sass": "^1.77.0"
+    }
+}

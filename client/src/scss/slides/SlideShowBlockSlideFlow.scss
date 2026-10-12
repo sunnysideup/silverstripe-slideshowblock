@@ -1,0 +1,47 @@
+@use '../settings' as *;
+
+.slideshow-flow {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+
+    @include deck {
+        flex-direction: row;
+        align-items: stretch;
+    }
+
+    &__node {
+        flex: 1 1 0;
+        padding: 1rem 1.1rem;
+        border: 1px dashed var(--slideshow-line);
+        border-radius: var(--slideshow-radius-sm);
+        background: var(--slideshow-surface-2);
+
+        b {
+            display: block;
+            margin-bottom: 0.25rem;
+        }
+
+        span {
+            font-size: 0.92rem;
+            color: var(--slideshow-muted);
+        }
+
+        &--highlight {
+            border: 2px solid var(--slideshow-accent);
+            background: var(--slideshow-accent-soft);
+        }
+    }
+
+    &__arrow {
+        display: grid;
+        place-items: center;
+        flex: none;
+        font-size: 1.4rem;
+        color: var(--slideshow-muted);
+
+        @include stacked {
+            transform: rotate(90deg);
+        }
+    }
+}
