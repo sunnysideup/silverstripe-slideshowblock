@@ -37,6 +37,4 @@ class SlideShowBlockSlideProof extends SlideShowBlockSlide
         'Text' => 'Explanation',
     ];
 
-    /** Counts the big number up when it comes into view. */
-    private static $has_js = true;
 }

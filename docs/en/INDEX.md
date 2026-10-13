@@ -9,7 +9,7 @@ support and a progress bar.
 As a Composer module (from your own repository or a path repository):
 
 ```bash
-composer require sunnysideup/silverstripe-slideshow-block
+composer require sunnysideup/slideshowblock
 vendor/bin/sake dev/build flush=1
 ```
 
@@ -58,13 +58,13 @@ Wrap words in asterisks: `Ship Shape *Hosting*` renders as
 
 ```bash
 # create a new draft page with the block on it
-vendor/bin/sake dev/tasks/slideshow-block-import
+vendor/bin/sake dev/tasks/slideshowblock-import
 
 # add it to an existing page (ID or URL segment), replace an earlier import, publish
-vendor/bin/sake dev/tasks/slideshow-block-import "page=hosting&replace=1&publish=1"
+vendor/bin/sake dev/tasks/slideshowblock-import "page=hosting&replace=1&publish=1"
 
 # use your own file
-vendor/bin/sake dev/tasks/slideshow-block-import "file=app/_content/my-deck.yml&page=12"
+vendor/bin/sake dev/tasks/slideshowblock-import "file=app/_content/my-deck.yml&page=12"
 ```
 
 The content lives in `_content/ship-shape-hosting.yml`. Keys are field names,

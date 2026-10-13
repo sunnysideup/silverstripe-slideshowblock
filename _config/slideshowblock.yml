@@ -4,9 +4,17 @@ Name: slideshowblock
 Sunnysideup\SlideShowBlock\Blocks\SlideShowBlock:
   # The composer name used to find this module's CSS and JS.
   # Change it if you copy the module into app/ or rename it.
-  resource_module: 'sunnysideup/silverstripe-slideshow-block'
+  resource_module: 'sunnysideup/slideshowblock'
   # Leave empty to offer every slide type, or list the classes editors may add.
   allowed_slide_classes: []
 
-Sunnysideup\SlideShowBlock\Tasks\SlideShowBlockImportTask:
-  default_file: 'sunnysideup/silverstripe-slideshow-block:_content/ship-shape-hosting.yml'
+# sunnysideup/webpack_requirements_backend swallows every Requirements call on
+# themed pages (it expects you to bundle them). This module ships its own
+# bundle in client/dist, so tell the backend to leave those files alone and
+# output them as normal <link> / <script> tags.
+Sunnysideup\WebpackRequirementsBackend\View\RequirementsBackendForWebpack:
+  files_starts_with_ignore:
+    - vendor/sunnysideup/slideshowblock/client/dist
+
+# Sunnysideup\SlideShowBlock\Tasks\SlideShowBlockImportTask:
+#   default_file: 'sunnysideup/slideshowblock:_content/ship-shape-hosting.yml'

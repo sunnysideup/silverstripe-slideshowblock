@@ -1,5 +1,5 @@
 {
-    "name": "silverstripe-slideshow-block",
+    "name": "silverstripe-slideshowblock",
     "private": true,
     "description": "Builds client/dist from client/src.",
     "scripts": {

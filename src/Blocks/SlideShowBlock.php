@@ -64,7 +64,7 @@ class SlideShowBlock extends BaseElement
     /**
      * Composer name of the module that holds client/dist.
      */
-    private static $resource_module = 'sunnysideup/silverstripe-slideshow-block';
+    private static $resource_module = 'sunnysideup/slideshowblock';
 
     /**
      * Optional allow-list of slide classes. Empty = all slide types.
@@ -169,8 +169,9 @@ class SlideShowBlock extends BaseElement
     public function requireAssets(): void
     {
         $module = static::resourceModule();
-        Requirements::css($module . ':client/dist/css/SlideShowBlock.css');
-        Requirements::javascript($module . ':client/dist/js/SlideShowBlock.js', ['defer' => true]);
+        Requirements::css($module . ':client/dist/main.css');
+        Requirements::javascript($module . ':client/dist/runtime.js', ['defer' => true]);
+        Requirements::javascript($module . ':client/dist/app.js', ['defer' => true]);
     }
 
     public static function resourceModule(): string

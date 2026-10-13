@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Sunnysideup\SlideShowBlock\Slides;
 
-use SilverStripe\Core\ClassInfo;
 use SilverStripe\Core\Convert;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\GridField\GridField;
@@ -21,7 +20,6 @@ use SilverStripe\ORM\FieldType\DBHTMLText;
 use SilverStripe\ORM\HasManyList;
 use SilverStripe\Security\Permission;
 use SilverStripe\Versioned\Versioned;
-use SilverStripe\View\Requirements;
 use Sunnysideup\SlideShowBlock\Blocks\SlideShowBlock;
 use Sunnysideup\SlideShowBlock\Model\SlideShowBlockSlideItem;
 use Symbiote\GridFieldExtensions\GridFieldAddNewInlineButton;
@@ -40,7 +38,6 @@ use Symbiote\GridFieldExtensions\GridFieldTitleHeader;
  *  - items_fields        [ItemField => column label] edited inline
  *  - extra_items_title / extra_items_fields   an optional second list
  *  - hidden_fields       shared fields this slide type does not use
- *  - has_css / has_js    whether client/dist/{css,js}/slides/<Class> is loaded
  *
  * @property string $Kicker
  * @property string $Heading
@@ -136,9 +133,7 @@ class SlideShowBlockSlide extends DataObject
      */
     private static $hidden_fields = [];
 
-    private static $has_css = true;
 
-    private static $has_js = false;
 
     public function getCMSFields()
     {
@@ -271,22 +266,7 @@ class SlideShowBlockSlide extends DataObject
      */
     public function getSlideHTML(): DBHTMLText
     {
-        $this->requireAssets();
-
         return $this->renderWith($this->getViewerTemplates());
-    }
-
-    public function requireAssets(): void
-    {
-        $module = SlideShowBlock::resourceModule();
-        $short = ClassInfo::shortName(static::class);
-
-        if (static::config()->get('has_css')) {
-            Requirements::css($module . ':client/dist/css/slides/' . $short . '.css');
-        }
-        if (static::config()->get('has_js')) {
-            Requirements::javascript($module . ':client/dist/js/slides/' . $short . '.js', ['defer' => true]);
-        }
     }
 
     public function canView($member = null)

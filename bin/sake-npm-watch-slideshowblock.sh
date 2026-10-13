@@ -4,9 +4,7 @@ source ~/.nvm/nvm.sh
 nvm use node
 
 echo '------------------------------'
-echo ' run build'
+echo ' run watch'
 echo '------------------------------'
-cd themes/sswebpack_engine_only/
-npm install
-npm run build --theme_dir=vendor/sunnysideup/slideshowblock/client --include_jquery=no
+vendor/bin/webpack watch vendor/sunnysideup/slideshowblock/client/ --no-jquery
 echo '------------------------------'

@@ -35,7 +35,7 @@ use Symfony\Component\Yaml\Yaml;
  *   publish=1   Publish the block (and the page, if this task created it).
  *
  * Example:
- *   vendor/bin/sake dev/tasks/slideshow-block-import "page=hosting&replace=1&publish=1"
+ *   vendor/bin/sake dev/tasks/slideshowblock-import "page=hosting&replace=1&publish=1"
  *
  * YAML format: see _content/ship-shape-hosting.yml. Keys are the field names
  * of the block, slide and item classes; "Type" picks the slide class
@@ -43,25 +43,30 @@ use Symfony\Component\Yaml\Yaml;
  */
 class SlideShowBlockImportTask extends BuildTask
 {
-    private static $segment = 'slideshow-block-import';
+    private static $segment = 'slideshowblock-import';
 
     protected $title = 'Slide show block: import from YAML';
 
     protected $description = 'Creates a slide show block with all its slides and items from a YAML file. '
         . 'Options: file, page, replace=1, publish=1.';
 
-    private static $default_file = 'sunnysideup/silverstripe-slideshow-block:_content/ship-shape-hosting.yml';
+    private static $default_file = 'app/_content/ship-shape-hosting.yml';
 
     /** @var string[] */
     private array $warnings = [];
 
     public function run($request)
     {
-        $file = $this->resolveFile((string) ($request->getVar('file') ?: static::config()->get('default_file')));
+        $fileLocation = (string) ($request->getVar('file') ?: static::config()->get('default_file'));
+        $fileLocation = 'app/_content/ship-shape-hosting.yml';
+        $file = $this->resolveFile($fileLocation);
         if ($file === null) {
-            $this->say('Could not find the YAML file. Check the "file" option.', 'error');
+            $file = file_get_contents(Director::baseFolder() . '/' . $fileLocation);
+            if (! $file) {
+                $this->say('Could not find the YAML file. Check the "file" option.', 'error');
 
-            return;
+                return;
+            }
         }
         $this->say('Reading ' . $file);
 
