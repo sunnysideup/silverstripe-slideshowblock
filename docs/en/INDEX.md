@@ -67,7 +67,7 @@ vendor/bin/sake dev/tasks/slideshowblock-import "page=hosting&replace=1&publish=
 vendor/bin/sake dev/tasks/slideshowblock-import "file=app/_content/my-deck.yml&page=12"
 ```
 
-The content lives in `_content/ship-shape-hosting.yml`. Keys are field names,
+The content lives in `_content/mycontent.yml`. Keys are field names,
 `Type` picks the slide class, and `Items` / `ExtraItems` are the two lists.
 
 ## Styling

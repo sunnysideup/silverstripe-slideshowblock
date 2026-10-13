@@ -50,7 +50,7 @@ class SlideShowBlockImportTask extends BuildTask
     protected $description = 'Creates a slide show block with all its slides and items from a YAML file. '
         . 'Options: file, page, replace=1, publish=1.';
 
-    private static $default_file = 'app/_content/ship-shape-hosting.yml';
+    private static $default_file = 'app/_content/mycontent.yml';
 
     /** @var string[] */
     private array $warnings = [];

@@ -10,11 +10,11 @@ Sunnysideup\SlideShowBlock\Blocks\SlideShowBlock:
 
 # sunnysideup/webpack_requirements_backend swallows every Requirements call on
 # themed pages (it expects you to bundle them). This module ships its own
-# bundle in client/dist, so tell the backend to leave those files alone and
-# output them as normal <link> / <script> tags.
+# files in client/dist, so tell the backend to leave them alone and output
+# them as normal <link> / <script> tags.
 Sunnysideup\WebpackRequirementsBackend\View\RequirementsBackendForWebpack:
   files_starts_with_ignore:
     - vendor/sunnysideup/slideshowblock/client/dist
 
-# Sunnysideup\SlideShowBlock\Tasks\SlideShowBlockImportTask:
-#   default_file: 'sunnysideup/slideshowblock:_content/ship-shape-hosting.yml'
+Sunnysideup\SlideShowBlock\Tasks\SlideShowBlockImportTask:
+  default_file: 'sunnysideup/slideshowblock:_content/my-slide-content.yml'
