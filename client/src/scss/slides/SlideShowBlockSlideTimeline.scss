@@ -1,43 +1,43 @@
-@use '../settings' as *;
+@use "../settings" as *;
 body {
-.sunnysideup__slideshowblock__blocks__slideshowblock {
-  .slideshow-timeline {
-    display: grid;
-    gap: 2rem;
+  .sunnysideup__slideshowblock__blocks__slideshowblock {
+    .slideshow-timeline {
+      display: grid;
+      gap: 2rem;
 
-    &__row {
+      &__row {
         display: grid;
         gap: 0.45rem;
 
         @include deck {
-            grid-template-columns: 22rem 1fr;
-            align-items: center;
-            gap: 1.5rem;
+          grid-template-columns: 22rem 1fr;
+          align-items: center;
+          gap: 1.5rem;
         }
-    }
+      }
 
-    &__label {
+      &__label {
         // h4 {
         //     margin: 0;
         //     padding: 0;
         // }
         line-height: 1;
         span {
-            font-size: 2rem!important;
-            color: var(--slideshow-muted);
+          font-size: 2rem !important;
+          color: var(--slideshow-muted);
         }
-    }
+      }
 
-    &__bar {
+      &__bar {
         display: flex;
         height: 6rem;
         border: 1px solid var(--slideshow-line);
         border-radius: 0.6rem;
         background: var(--slideshow-surface-2);
         overflow: hidden;
-    }
+      }
 
-    &__fill {
+      &__fill {
         display: flex;
         align-items: center;
         flex: none;
@@ -46,20 +46,20 @@ body {
         height: 100%;
         padding: 0 0.85rem;
         background: var(--slideshow-accent);
-        color: var(--slideshow-text)!important;
+        color: var(--slideshow-text) !important;
         font-size: 1.5rem;
         font-weight: 700;
         white-space: nowrap;
 
         // Grow the bars when the slide comes into view.
         @include enhanced {
-            transition: width 0.9s var(--slideshow-ease) 0.25s;
+          transition: width 0.9s var(--slideshow-ease) 0.25s;
         }
 
         @include enhanced-inactive {
-            width: 0;
+          width: 0;
         }
+      }
     }
   }
-}
 }

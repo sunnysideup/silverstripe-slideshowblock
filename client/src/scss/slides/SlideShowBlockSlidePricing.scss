@@ -1,6 +1,30 @@
 @use "../settings" as *;
 body {
 .sunnysideup__slideshowblock__blocks__slideshowblock {
+  // Slide the factors into place when the slide comes into view.
+  // Written out in full (not with the enhanced / enhanced-inactive mixins):
+  // the mixins prepend their ancestors to the *whole* nested selector, which
+  // puts them in front of `body` and so they never match.
+  .slideshow.is-enhanced .slideshow-pricing {
+    &__fill {
+      transition: width 0.9s var(--slideshow-ease) 0.25s;
+    }
+
+    &__thumb {
+      transition: left 0.9s var(--slideshow-ease) 0.25s;
+    }
+  }
+
+  .slideshow.is-enhanced .slideshow-slide:not(.is-active) .slideshow-pricing {
+    &__fill {
+      width: 0;
+    }
+
+    &__thumb {
+      left: 0;
+    }
+  }
+
   .slideshow-pricing {
     &__factors {
       display: grid;
@@ -55,27 +79,6 @@ body {
       border: 4px solid var(--slideshow-accent);
       border-radius: 50%;
       background: var(--slideshow-surface);
-    }
-
-    // Slide the factors into place when the slide comes into view.
-    &__fill {
-      @include enhanced {
-        transition: width 0.9s var(--slideshow-ease) 0.25s;
-      }
-
-      @include enhanced-inactive {
-        width: 0;
-      }
-    }
-
-    &__thumb {
-      @include enhanced {
-        transition: left 0.9s var(--slideshow-ease) 0.25s;
-      }
-
-      @include enhanced-inactive {
-        left: 0;
-      }
     }
 
     &__scale {
