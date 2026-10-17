@@ -87,13 +87,11 @@ Each slide type loads only its own CSS, and only when that type is on the page.
 
 ## Build
 
-```bash
-npm install
-npm run build    # client/src -> client/dist (compiled CSS, copied JS)
-npm run watch
-```
+Use your own builder or install `sunnysideup/sswebpack_engine_only` and then run:
 
-`client/dist` is committed, so a build is only needed after changing the SCSS or JS.
+- `vendor/bin/sake-npm-install-slideshowblock.sh` (if available)
+- `vendor/bin/sake-npm-watch-slideshowblock.sh`
+- `vendor/bin/sake-npm-build-slideshowblock.sh`
 
 ## Adding a slide type
 

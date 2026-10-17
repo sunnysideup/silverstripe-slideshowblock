@@ -1,6 +1,7 @@
 @use "../settings" as *;
 
-.typography {
+body {
+.sunnysideup__slideshowblock__blocks__slideshowblock {
   .slideshow-proof {
     display: grid;
     gap: 1.5rem;
@@ -18,7 +19,7 @@
       background: var(--slideshow-accent);
       * {
         // color: var(--slideshow-accent-ink);
-        color: #ffffff;
+        color: #ffffff!important;
       }
     }
 
@@ -63,4 +64,5 @@
       }
     }
   }
+}
 }
