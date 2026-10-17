@@ -40,6 +40,13 @@
         }, { threshold: 0.6 });
 
         document.querySelectorAll('.slideshow-slide--proof [data-count-up]').forEach((element) => {
+            // This script can be loaded twice (module bundle + theme bundle).
+            // A second run would read the "0+" the first one just wrote and
+            // count to 0, so only ever bind an element once.
+            if (element.dataset.countUpBound) {
+                return;
+            }
+            element.dataset.countUpBound = '1';
             observer.observe(element);
         });
     };

@@ -169,9 +169,9 @@ class SlideShowBlock extends BaseElement
     public function requireAssets(): void
     {
         $module = static::resourceModule();
-        Requirements::css($module . ':client/dist/main.css');
-        Requirements::javascript($module . ':client/dist/runtime.js', ['defer' => true]);
-        Requirements::javascript($module . ':client/dist/app.js', ['defer' => true]);
+        // Requirements::css($module . ':client/dist/main.css');
+        // Requirements::javascript($module . ':client/dist/runtime.js', ['defer' => true]);
+        // Requirements::javascript($module . ':client/dist/app.js', ['defer' => true]);
     }
 
     public static function resourceModule(): string
