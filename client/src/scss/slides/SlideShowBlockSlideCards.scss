@@ -1,56 +1,65 @@
-@use '../settings' as *;
+@use "../settings" as *;
 
-.slideshow-cards {
+.typography {
+  .slideshow-cards {
     display: grid;
-    gap: 0.85rem;
-    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+    gap: 2rem;
+    margin: 1rem 0;
+    grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr));
 
     @include deck {
-        &--cols-2 {
-            grid-template-columns: repeat(2, 1fr);
-        }
+      &--cols-2 {
+        grid-template-columns: repeat(2, 1fr);
+      }
 
-        &--cols-3 {
-            grid-template-columns: repeat(3, 1fr);
-        }
+      &--cols-3 {
+        grid-template-columns: repeat(3, 1fr);
+      }
 
-        &--cols-4 {
-            grid-template-columns: repeat(4, 1fr);
-        }
+      &--cols-4 {
+        grid-template-columns: repeat(4, 1fr);
+      }
     }
 
     .slideshow-card {
-        padding: 1.1rem;
-    }
-
-    .slideshow-card__title {
+      padding: 2rem!important;
+      &__header {
+        display: flex;
+        align-content: flex-end;
+        flex-wrap: nowrap;
+        align-items: center;
+        padding-bottom: 1rem;
+      }
+      &__title {
         margin-top: 0.6rem;
-        font-size: 1rem;
+        font-size: 2.5rem;
+      }
     }
 
-    .slideshow-card p {
-        font-size: 0.93rem;
-    }
+
 
     // Problems: orange icons on white cards
     &--warning {
-        .slideshow-card {
-            background: var(--slideshow-surface);
-        }
+      .slideshow-card {
+        background: var(--slideshow-surface);
+      }
 
-        .slideshow-icon {
-            background: var(--slideshow-warning-soft);
-            color: var(--slideshow-warning);
+      .slideshow-icon {
+        background: var(--slideshow-warning-soft);
+        color: var(--slideshow-warning);
+        rect, path, * {           stroke: var(--slideshow-accent-ink)!important;
         }
+      }
     }
 
     // Plain: no icon tile, title sits at the top
     &--plain .slideshow-card__title {
-        margin-top: 0;
+      margin-top: 0;
     }
 
     .slideshow-card--highlight {
-        border: 2px solid var(--slideshow-accent);
-        background: var(--slideshow-accent-soft);
+      border: 2px solid var(--slideshow-accent);
+      background: var(--slideshow-accent-soft);
     }
+  }
 }

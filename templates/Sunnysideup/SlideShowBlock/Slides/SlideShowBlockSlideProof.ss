@@ -8,7 +8,7 @@
     <% end_if %>
     <% if $Items %>
     <ul class="slideshow-proof__reasons">
-        <% loop $Items %><li><b>$Title</b><% if $Text %><span>$Text</span><% end_if %></li><% end_loop %>
+        <% loop $Items %><li><h4>$Title</h4><% if $Text %><p>$Text</p><% end_if %></li><% end_loop %>
     </ul>
     <% end_if %>
 </div>

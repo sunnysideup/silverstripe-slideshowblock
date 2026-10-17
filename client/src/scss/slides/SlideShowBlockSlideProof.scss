@@ -1,57 +1,66 @@
-@use '../settings' as *;
+@use "../settings" as *;
 
-.slideshow-proof {
+.typography {
+  .slideshow-proof {
     display: grid;
     gap: 1.5rem;
     align-items: start;
+    padding-top: 2rem;
 
     @include deck {
-        grid-template-columns: 15rem 1fr;
-        gap: 3rem;
+      grid-template-columns: 22rem 1fr;
+      gap: 3rem;
     }
 
     &__stat {
-        padding: 1.5rem;
-        border-radius: var(--slideshow-radius-sm);
-        background: var(--slideshow-accent);
-        color: var(--slideshow-accent-ink);
+      padding: 1.5rem;
+      border-radius: var(--slideshow-radius-sm);
+      background: var(--slideshow-accent);
+      * {
+        // color: var(--slideshow-accent-ink);
+        color: #ffffff;
+      }
     }
 
     &__number {
-        display: block;
-        font-size: clamp(3rem, 2rem + 4vw, 4.75rem);
-        font-weight: 800;
-        line-height: 1;
-        letter-spacing: -0.03em;
-        font-variant-numeric: tabular-nums;
+      display: block;
+      font-size: clamp(3rem, 2rem + 4vw, 4.75rem);
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: -0.03em;
+      font-variant-numeric: tabular-nums;
     }
 
     &__label {
-        display: block;
-        margin-top: 0.5rem;
-        font-weight: 650;
+      display: block;
+      margin-top: 0.5rem;
+      font-weight: 650;
     }
 
     &__reasons {
+      display: grid;
+      gap: 1.1rem;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      padding-top: 0!important;
+
+      li {
         display: grid;
-        gap: 1.1rem;
-        margin: 0;
-        padding: 0;
-        list-style: none;
+        gap: 0.2rem;
+        padding-left: 1rem;
+        // border-left: 3px solid var(--slideshow-accent);
+        border-left: none!important;
+        // h4 {
+        //   margin-top: 0!important;
+        //   padding-top: 0!important;
+        // }
+      }
 
-        li {
-            display: grid;
-            gap: 0.2rem;
-            padding-left: 1rem;
-            border-left: 3px solid var(--slideshow-accent);
-        }
 
-        b {
-            font-size: 1.05rem;
-        }
-
-        span {
-            color: var(--slideshow-muted);
-        }
+      span {
+        color: var(--slideshow-muted);
+      }
     }
+  }
 }

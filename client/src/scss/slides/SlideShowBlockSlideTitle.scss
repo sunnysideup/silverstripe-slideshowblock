@@ -1,57 +1,66 @@
-@use '../settings' as *;
+@use "../settings" as *;
 
-.slideshow-title {
+.typography {
+  .slideshow-title {
     &__heading {
-        font-size: clamp(2.4rem, 1.4rem + 4.5vw, 4.75rem);
+      font-size: clamp(2.4rem, 1.4rem + 4.5vw, 6.75rem);
     }
 
+
+    &__sub,
+    &__tag {
+      margin: 1rem 0 0 !important;
+      margin-top: 1.5rem !important;
+      font-size: clamp(2.15rem, 2rem + 1.8vw, 2.6rem) !important;
+      font-weight: 600;
+      text-wrap: balance;
+    }
     &__sub {
-        margin: 0.5rem 0 0;
-        font-size: clamp(1.15rem, 1rem + 0.8vw, 1.6rem);
-        font-weight: 600;
-        text-wrap: balance;
     }
 
     &__tag {
-        margin: 0.4rem 0 0;
-        font-size: 1.05rem;
-        color: var(--slideshow-muted);
+      color: var(--slideshow-muted);
+      margin-top: 0rem !important;
+      font-weight: 400!important;
     }
-
     &__pills {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.6rem;
-        margin: 0;
-        padding: 0;
-        list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin: 0!important;
+      padding: 0!important;
+      list-style: none;
     }
 
     &__pill {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.45rem;
-        padding: 0.5rem 0.95rem;
-        border: 1px solid var(--slideshow-line);
-        border-radius: 999px;
-        background: var(--slideshow-surface-2);
-        font-size: 0.9rem;
-        font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.5rem 2rem!important;
+      border: 1px solid var(--slideshow-line);
+      border-radius: 999px;
+      background: var(--slideshow-surface-2);
+      font-size: 2rem;
+      font-weight: 600;
 
-        &::before {
-            content: '';
-            flex: none;
-            width: 0.55rem;
-            height: 0.55rem;
-            border-radius: 50%;
-            background: var(--slideshow-accent);
-        }
+      &::before {
+        content: "";
+        flex: none;
+        width: 0.55rem;
+        height: 0.55rem;
+        border-radius: 50%;
+        background: var(--slideshow-accent);
+      }
     }
 
     &__wave {
-        width: 100%;
-        max-width: 30rem;
-        height: auto;
-        color: var(--slideshow-accent);
+      width: 100%;
+      max-width: 60rem;
+      height: auto;
+      color: var(--slideshow-accent)!important;
+      path {
+        stroke: var(--slideshow-accent)!important;
+      }
     }
+  }
 }

@@ -1,34 +1,36 @@
 @use '../settings' as *;
 
-.slideshow-timeline {
+.typography {
+  .slideshow-timeline {
     display: grid;
-    gap: 1rem;
+    gap: 2rem;
 
     &__row {
         display: grid;
         gap: 0.45rem;
 
         @include deck {
-            grid-template-columns: 14rem 1fr;
+            grid-template-columns: 22rem 1fr;
             align-items: center;
             gap: 1.5rem;
         }
     }
 
     &__label {
-        b {
-            display: block;
-        }
-
+        // h4 {
+        //     margin: 0;
+        //     padding: 0;
+        // }
+        line-height: 1;
         span {
-            font-size: 0.9rem;
+            font-size: 2rem!important;
             color: var(--slideshow-muted);
         }
     }
 
     &__bar {
         display: flex;
-        height: 2.4rem;
+        height: 6rem;
         border: 1px solid var(--slideshow-line);
         border-radius: 0.6rem;
         background: var(--slideshow-surface-2);
@@ -44,8 +46,8 @@
         height: 100%;
         padding: 0 0.85rem;
         background: var(--slideshow-accent);
-        color: var(--slideshow-accent-ink);
-        font-size: 0.9rem;
+        color: #fff;
+        font-size: 1.5rem;
         font-weight: 700;
         white-space: nowrap;
 
@@ -58,4 +60,5 @@
             width: 0;
         }
     }
+  }
 }

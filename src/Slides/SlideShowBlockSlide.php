@@ -159,7 +159,10 @@ class SlideShowBlockSlide extends DataObject
                 $footnote->setRows(3);
             }
 
-            $fields->removeByName((array) static::config()->get('hidden_fields'));
+            $hiddenFields = (array) static::config()->get('hidden_fields');
+            if ($hiddenFields) {
+                $fields->removeByName((array) $hiddenFields);
+            }
 
             $this->addItemGrid($fields, 'Items', 'items');
             $this->addItemGrid($fields, 'ExtraItems', 'extra_items');
