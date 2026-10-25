@@ -1,131 +1,150 @@
 @use "../settings" as *;
 body {
-.sunnysideup__slideshowblock__blocks__slideshowblock {
-  // Slide the factors into place when the slide comes into view.
-  // Written out in full (not with the enhanced / enhanced-inactive mixins):
-  // the mixins prepend their ancestors to the *whole* nested selector, which
-  // puts them in front of `body` and so they never match.
-  .slideshow.is-enhanced .slideshow-pricing {
-    &__fill {
-      transition: width 0.9s var(--slideshow-ease) 0.25s;
-    }
-
-    &__thumb {
-      transition: left 0.9s var(--slideshow-ease) 0.25s;
-    }
-  }
-
-  .slideshow.is-enhanced .slideshow-slide:not(.is-active) .slideshow-pricing {
-    &__fill {
-      width: 0;
-    }
-
-    &__thumb {
-      left: 0;
-    }
-  }
-
-  .slideshow-pricing {
-    &__factors {
-      display: grid;
-      gap: 1rem;
-    }
-
-    &__factor {
-      display: grid;
-      gap: 0.5rem;
-
-      @include deck {
-        grid-template-columns: 22rem 1fr;
-        align-items: center;
-        gap: 2rem;
+  .sunnysideup__slideshowblock__blocks__slideshowblock {
+    .slideshow-pricing {
+      &__factors {
+        display: grid;
+        gap: 1rem;
       }
-    }
 
-    &__label {
-      // h4 {
-      //   padding: 0;
-      //   margin: 0;
-      // }
-      line-height: 1;
-      span {
+      &__factor {
+        display: grid;
+        gap: 0.5rem;
+
+        @include deck {
+          grid-template-columns: 22rem 1fr;
+          align-items: center;
+          gap: 2rem;
+        }
+      }
+
+      &__label {
+        // h4 {
+        //   padding: 0;
+        //   margin: 0;
+        // }
+        line-height: 1;
+        span {
+          font-size: 1.5rem;
+          color: var(--slideshow-muted);
+        }
+      }
+
+      &__track {
+        position: relative;
+        height: 0.6rem;
+        border-radius: 999px;
+        background: var(--slideshow-line);
+      }
+
+      &__fill {
+        position: absolute;
+        inset: 0 auto 0 0;
+        width: var(--v);
+        border-radius: inherit;
+        background: var(--slideshow-accent);
+      }
+
+      &__thumb {
+        position: absolute;
+        top: 50%;
+        left: var(--v);
+        width: 1.4rem;
+        height: 1.4rem;
+        translate: -50% -50%;
+        border: 4px solid var(--slideshow-accent);
+        border-radius: 50%;
+        background: var(--slideshow-surface);
+      }
+
+      // Slide the factors into place when the slide comes into view.
+      &__fill {
+        @include enhanced {
+          transition: width 0.9s var(--slideshow-ease) 0.25s;
+        }
+
+        @include enhanced-inactive {
+          width: 0;
+        }
+      }
+
+      &__thumb {
+        @include enhanced {
+          transition: left 0.9s var(--slideshow-ease) 0.25s;
+        }
+
+        @include enhanced-inactive {
+          left: 0;
+        }
+      }
+      // Slide the factors into place when the slide comes into view.
+      // Written out in full (not with the enhanced / enhanced-inactive mixins):
+      // the mixins prepend their ancestors to the *whole* nested selector, which
+      // puts them in front of `body` and so they never match.
+      .slideshow.is-enhanced .slideshow-pricing {
+        &__fill {
+          transition: width 0.9s var(--slideshow-ease) 0.25s;
+        }
+
+        &__thumb {
+          transition: left 0.9s var(--slideshow-ease) 0.25s;
+        }
+      }
+
+      .slideshow.is-enhanced .slideshow-slide:not(.is-active) .slideshow-pricing {
+        &__fill {
+          width: 0;
+        }
+
+        &__thumb {
+          left: 0;
+        }
+      }
+      &__scale {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 0.4rem;
         font-size: 1.5rem;
         color: var(--slideshow-muted);
       }
-    }
 
-    &__track {
-      position: relative;
-      height: 0.6rem;
-      border-radius: 999px;
-      background: var(--slideshow-line);
-    }
+      &__bands {
+        display: grid;
+        gap: 1.5rem;
+        grid-template-columns: repeat(auto-fit, minmax(27rem, 1fr));
+      }
 
-    &__fill {
-      position: absolute;
-      inset: 0 auto 0 0;
-      width: var(--v);
-      border-radius: inherit;
-      background: var(--slideshow-accent);
-    }
+      &__band {
+        padding: 1rem 1.2rem;
+        border: 1px solid var(--slideshow-line);
+        border-radius: var(--slideshow-radius-sm);
+        background: var(--slideshow-surface-2);
 
-    &__thumb {
-      position: absolute;
-      top: 50%;
-      left: var(--v);
-      width: 1.4rem;
-      height: 1.4rem;
-      translate: -50% -50%;
-      border: 4px solid var(--slideshow-accent);
-      border-radius: 50%;
-      background: var(--slideshow-surface);
-    }
+        h4 {
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          color: var(--slideshow-muted);
+        }
 
-    &__scale {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 0.4rem;
-      font-size: 1.5rem;
-      color: var(--slideshow-muted);
-    }
+        &--highlight {
+          border: 2px solid var(--slideshow-accent);
+          background: var(--slideshow-accent-soft);
+        }
+      }
 
-    &__bands {
-      display: grid;
-      gap: 1.5rem;
-      grid-template-columns: repeat(auto-fit, minmax(27rem, 1fr));
-    }
+      &__price {
+        display: inline;
+        font-size: 2rem;
+        font-weight: 750;
+        letter-spacing: -0.01em;
+        font-variant-numeric: tabular-nums;
+      }
 
-    &__band {
-      padding: 1rem 1.2rem;
-      border: 1px solid var(--slideshow-line);
-      border-radius: var(--slideshow-radius-sm);
-      background: var(--slideshow-surface-2);
-
-      h4 {
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
+      &__note {
+        display: inline;
+        font-size: 2rem;
         color: var(--slideshow-muted);
       }
-
-      &--highlight {
-        border: 2px solid var(--slideshow-accent);
-        background: var(--slideshow-accent-soft);
-      }
-    }
-
-    &__price {
-      display: inline;
-      font-size: 2rem;
-      font-weight: 750;
-      letter-spacing: -0.01em;
-      font-variant-numeric: tabular-nums;
-    }
-
-    &__note {
-      display: inline;
-      font-size: 2rem;
-      color: var(--slideshow-muted);
     }
   }
-}
 }

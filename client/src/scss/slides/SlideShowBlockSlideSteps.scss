@@ -1,38 +1,38 @@
 @use "../settings" as *;
 
 body {
-.sunnysideup__slideshowblock__blocks__slideshowblock {
-  .slideshow-steps {
-    display: grid;
-    gap: 2rem;
-    margin: 0!important;
-    padding: 0!important;
-    list-style: none;
-    counter-reset: slideshow-step;
+  .sunnysideup__slideshowblock__blocks__slideshowblock {
+    .slideshow-steps {
+      display: grid;
+      gap: 2rem;
+      margin: 0 !important;
+      padding: 0 !important;
+      list-style: none;
+      counter-reset: slideshow-step;
 
-    @include deck {
-      grid-template-columns: repeat(auto-fit, minmax(24rem, 1fr));
-    }
+      @include deck {
+        grid-template-columns: repeat(auto-fit, minmax(24rem, 1fr));
+      }
 
-    li {
-      padding: 2rem!important;
-      counter-increment: slideshow-step;
+      li {
+        padding: 2rem !important;
+        counter-increment: slideshow-step;
 
-      &::before {
-        content: counter(slideshow-step);
-        display: grid;
-        place-items: center;
-        width: 5rem;
-        height: 5rem;
-        border-radius: 50%;
-        background: var(--slideshow-accent);
-        color: #fff;
-        font-weight: 800;
-        margin-bottom: 1rem!important;
-        font-size: 3rem;
-        line-height: 3rem;
+        &::before {
+          content: counter(slideshow-step);
+          display: grid;
+          place-items: center;
+          width: 5rem;
+          height: 5rem;
+          border-radius: 50%;
+          background: var(--slideshow-accent);
+          color: #fff;
+          font-weight: 800;
+          margin-bottom: 1rem !important;
+          font-size: 3rem;
+          line-height: 3rem;
+        }
       }
     }
   }
-}
 }
