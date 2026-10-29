@@ -1,6 +1,19 @@
 @use "../settings" as *;
 body {
   .sunnysideup__slideshowblock__blocks__slideshowblock {
+    // Scroll-reveal: bars start at 0 and grow once the slide has been scrolled
+    // into view (JS adds .is-reveal-ready, then .is-revealed on the slide; see
+    // SlideShowBlock.js). Without JS they just show their value.
+    .slideshow.is-reveal-ready {
+      .slideshow-timeline__fill {
+        transition: width 0.9s var(--slideshow-ease) 0.25s;
+      }
+
+      .slideshow-slide:not(.is-revealed) .slideshow-timeline__fill {
+        width: 0;
+      }
+    }
+
     .slideshow-timeline {
       display: grid;
       gap: 2rem;
@@ -9,7 +22,7 @@ body {
         display: grid;
         gap: 0.45rem;
 
-        @include deck {
+        @include wide {
           grid-template-columns: 22rem 1fr;
           align-items: center;
           gap: 1.5rem;
@@ -50,15 +63,6 @@ body {
         font-size: 1.5rem;
         font-weight: 700;
         white-space: nowrap;
-
-        // Grow the bars when the slide comes into view.
-        @include enhanced {
-          transition: width 0.9s var(--slideshow-ease) 0.25s;
-        }
-
-        @include enhanced-inactive {
-          width: 0;
-        }
       }
     }
   }

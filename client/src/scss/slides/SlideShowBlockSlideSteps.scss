@@ -10,7 +10,7 @@ body {
       list-style: none;
       counter-reset: slideshow-step;
 
-      @include deck {
+      @include wide {
         grid-template-columns: repeat(auto-fit, minmax(24rem, 1fr));
       }
 

@@ -4,7 +4,21 @@
 
 $deck-min: 48rem; // from here up the slides become a horizontal deck
 
+// Set to true to bring the swipeable deck back (also set DECK_ENABLED in
+// js/SlideShowBlock.js). While false, every viewport gets the stacked layout.
+$deck-enabled: false;
+
 @mixin deck {
+  @if $deck-enabled {
+    @media (min-width: $deck-min) {
+      @content;
+    }
+  }
+}
+
+// Layout helpers for what is *inside* a slide (columns, rows). These do not
+// depend on the deck, so multi-column slides still work with it switched off.
+@mixin wide {
   @media (min-width: $deck-min) {
     @content;
   }

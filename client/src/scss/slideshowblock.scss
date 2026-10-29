@@ -41,6 +41,18 @@ body {
       overflow: hidden;
       line-height: 1.5;
 
+      // Wide screens: the theme has a fixed side nav and pushes <main> right
+      // by --page-offset-left / --page-offset-right. Cancel those offsets so
+      // the show runs from the edge of the nav to the right edge of the screen.
+      // (Matches the theme's own 1050px side-nav breakpoint.)
+      @media (min-width: 1050px) {
+        margin-left: calc(var(--page-offset-left, 0px) * -1 + var(--nav-width, 0px));
+        margin-right: calc(var(--page-offset-right, 0px) * -1);
+        border-left: 0;
+        border-right: 0;
+        border-radius: 0;
+      }
+
       *,
       *::before,
       *::after {
@@ -80,6 +92,7 @@ body {
       }
 
       &__title {
+        display: none; // hidden for now; the text stays in the markup and aria-label
         margin: 0;
         font-size: 2rem;
         font-weight: 600;
@@ -250,7 +263,16 @@ body {
       padding: 7rem 3rem;
       margin-left: 0 !important;
       @media (min-width: 768px) {
-        padding: 2rem 1.5rem;
+        // Generous vertical space: the divider line is the slide's border-top,
+        // so this puts the same room above and below it.
+        padding: 8rem 1.5rem;
+      }
+      // Wide screens: line the slide content up with the rest of the page.
+      // The show is full bleed (see .slideshow), so the gutters are the
+      // theme's page offsets: left = offset minus the nav, right = offset.
+      @media (min-width: 1050px) {
+        padding-left: calc(var(--page-offset-left, calc(1.5rem + var(--nav-width, 0px))) - var(--nav-width, 0px));
+        padding-right: var(--page-offset-right, 1.5rem);
       }
       > * {
         min-width: 0;
@@ -314,7 +336,14 @@ body {
         text-wrap: balance;
 
         mark {
-          background: linear-gradient(transparent 65%, var(--slideshow-accent) 40%);
+          // Green highlight, same colour as <strong> elsewhere on the site.
+          // It is a gradient drawn on the mark's box: clear down to 65% of the
+          // box height, then green to the bottom edge. The headings have a tight
+          // line-height (1.1) so the box is short; body text is 1.5, which is why
+          // the site's <strong> sits lower. 65% -> 100% here lands in the same
+          // place relative to the letters. Raise 65% to make it thinner/lower,
+          // lower it to make it thicker/higher.
+          background: linear-gradient(transparent 65%, var(--colour-highlight, var(--slideshow-accent)) 65%);
           color: inherit;
           padding: 0 0.1em;
         }
@@ -355,7 +384,9 @@ body {
       font-size: 0.95rem;
       color: var(--slideshow-muted);
       > * {
-        padding-left: 2.5rem !important;
+        // Readable line length; no indent (it used to be padding-left: 2.5rem).
+        max-width: 70ch;
+        padding-left: 0 !important;
       }
 
       > :first-child {
@@ -434,7 +465,7 @@ body {
       &--2col {
         gap: 0.7rem 2rem;
 
-        @include deck {
+        @include wide {
           grid-template-columns: 1fr 1fr;
         }
       }

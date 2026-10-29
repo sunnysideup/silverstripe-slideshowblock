@@ -1,6 +1,31 @@
 @use "../settings" as *;
 body {
   .sunnysideup__slideshowblock__blocks__slideshowblock {
+    // Scroll-reveal: the bars start at 0 and slide to their value once the slide
+    // has been scrolled into view (JS adds .is-reveal-ready, then .is-revealed
+    // on the slide; see SlideShowBlock.js). Without JS they just show their value.
+    // Written out in full (no mixins) so the selector is not prefixed with the
+    // ancestors in front of `body`.
+    .slideshow.is-reveal-ready {
+      .slideshow-pricing__fill {
+        transition: width 0.9s var(--slideshow-ease) 0.25s;
+      }
+
+      .slideshow-pricing__thumb {
+        transition: left 0.9s var(--slideshow-ease) 0.25s;
+      }
+
+      .slideshow-slide:not(.is-revealed) {
+        .slideshow-pricing__fill {
+          width: 0;
+        }
+
+        .slideshow-pricing__thumb {
+          left: 0;
+        }
+      }
+    }
+
     .slideshow-pricing {
       &__factors {
         display: grid;
@@ -11,7 +36,7 @@ body {
         display: grid;
         gap: 0.5rem;
 
-        @include deck {
+        @include wide {
           grid-template-columns: 22rem 1fr;
           align-items: center;
           gap: 2rem;
@@ -57,49 +82,6 @@ body {
         background: var(--slideshow-surface);
       }
 
-      // Slide the factors into place when the slide comes into view.
-      &__fill {
-        @include enhanced {
-          transition: width 0.9s var(--slideshow-ease) 0.25s;
-        }
-
-        @include enhanced-inactive {
-          width: 0;
-        }
-      }
-
-      &__thumb {
-        @include enhanced {
-          transition: left 0.9s var(--slideshow-ease) 0.25s;
-        }
-
-        @include enhanced-inactive {
-          left: 0;
-        }
-      }
-      // Slide the factors into place when the slide comes into view.
-      // Written out in full (not with the enhanced / enhanced-inactive mixins):
-      // the mixins prepend their ancestors to the *whole* nested selector, which
-      // puts them in front of `body` and so they never match.
-      .slideshow.is-enhanced .slideshow-pricing {
-        &__fill {
-          transition: width 0.9s var(--slideshow-ease) 0.25s;
-        }
-
-        &__thumb {
-          transition: left 0.9s var(--slideshow-ease) 0.25s;
-        }
-      }
-
-      .slideshow.is-enhanced .slideshow-slide:not(.is-active) .slideshow-pricing {
-        &__fill {
-          width: 0;
-        }
-
-        &__thumb {
-          left: 0;
-        }
-      }
       &__scale {
         display: flex;
         justify-content: space-between;

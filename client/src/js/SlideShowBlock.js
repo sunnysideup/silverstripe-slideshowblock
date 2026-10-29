@@ -12,7 +12,10 @@
  *   document.addEventListener('slideshow:activate', (e) => { … e.target … });
  */
 (() => {
-    const DECK_QUERY = window.matchMedia('(min-width: 48rem)');
+    // Set to false to keep every slide stacked at all widths (no deck).
+    // Keep in sync with $deck-enabled in scss/_settings.scss.
+    const DECK_ENABLED = false;
+    const DECK_QUERY = window.matchMedia(DECK_ENABLED ? '(min-width: 48rem)' : 'not all');
     const REDUCED_MOTION = window.matchMedia('(prefers-reduced-motion: reduce)');
 
     class SlideShowBlock {
@@ -37,6 +40,8 @@
             this.#counter = root.querySelector('[data-counter]');
             this.#progress = root.querySelector('[data-progress]');
 
+            this.#initReveal();
+
             if (this.#slides.length < 2) {
                 return;
             }
@@ -57,6 +62,33 @@
             const sync = () => (DECK_QUERY.matches ? this.#enable() : this.#disable());
             DECK_QUERY.addEventListener('change', sync);
             sync();
+        }
+
+        /**
+         * Scroll-reveal for the bar graphs (pricing sliders, timeline bars).
+         * Once the graph has scrolled into view its slide gets `.is-revealed`,
+         * and the CSS moves the bars from 0 to their value. Nothing is hidden
+         * until `.is-reveal-ready` is set, so without JS (or with reduced
+         * motion) the bars simply show their final value.
+         */
+        #initReveal() {
+            if (REDUCED_MOTION.matches || !('IntersectionObserver' in window)) {
+                return;
+            }
+            const graphs = this.#root.querySelectorAll('.slideshow-pricing__factors, .slideshow-timeline');
+            if (!graphs.length) {
+                return;
+            }
+            const observer = new IntersectionObserver((entries) => {
+                for (const entry of entries) {
+                    if (entry.isIntersecting) {
+                        observer.unobserve(entry.target);
+                        entry.target.closest('.slideshow-slide')?.classList.add('is-revealed');
+                    }
+                }
+            }, { threshold: 0.3 });
+            this.#root.classList.add('is-reveal-ready');
+            graphs.forEach((graph) => observer.observe(graph));
         }
 
         go(index) {

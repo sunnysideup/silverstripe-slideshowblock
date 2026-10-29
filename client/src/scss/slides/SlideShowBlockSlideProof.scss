@@ -8,8 +8,8 @@ body {
       align-items: start;
       padding-top: 2rem;
 
-      @include deck {
-        grid-template-columns: 22rem 1fr;
+      @include wide {
+        grid-template-columns: minmax(30rem, 2fr) 3fr; // stat column ~40% of the width
         gap: 3rem;
       }
 
@@ -25,7 +25,7 @@ body {
 
       &__number {
         display: block;
-        font-size: clamp(3rem, 2rem + 4vw, 4.75rem);
+        font-size: clamp(6rem, 3rem + 7vw, 12rem);
         font-weight: 800;
         line-height: 1;
         letter-spacing: -0.03em;

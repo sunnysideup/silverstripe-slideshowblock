@@ -7,7 +7,7 @@ body {
       flex-direction: column;
       gap: 1rem;
 
-      @include deck {
+      @include wide {
         flex-direction: row;
         align-items: stretch;
       }
