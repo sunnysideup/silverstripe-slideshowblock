@@ -13,13 +13,10 @@ use DNADesign\Elemental\Models\BaseElement;
 use DNADesign\Elemental\Models\ElementalArea;
 use Page;
 use SilverStripe\CMS\Model\SiteTree;
-use SilverStripe\Control\Director;
-use SilverStripe\Core\Convert;
 use SilverStripe\Core\Manifest\ModuleLoader;
 use SilverStripe\Core\Path;
 use SilverStripe\Dev\BuildTask;
 use SilverStripe\ORM\DataObject;
-use SilverStripe\ORM\DB;
 use Sunnysideup\SlideShowBlock\Blocks\SlideShowBlock;
 use Sunnysideup\SlideShowBlock\Model\SlideShowBlockSlideItem;
 use Sunnysideup\SlideShowBlock\Slides\SlideShowBlockSlide;
@@ -28,18 +25,18 @@ use Symfony\Component\Yaml\Yaml;
 /**
  * Creates a Slide show block (with its slides and items) from a YAML file.
  *
- * Options (query string, or "key=value" arguments to sake):
+ * Options (CLI options, shortcuts in brackets):
  *
- *   file=…      YAML file. Either "vendor/module:path/file.yml", a path relative
+ *   --file=… (-f)    YAML file. Either "vendor/module:path/file.yml", a path relative
  *               to the project root, or an absolute path.
  *               Default: the Ship Shape deck that ships with this module.
- *   page=…      Page ID or URLSegment to add the block to. Without it, a new
+ *   --page=… (-p)    Page ID or URLSegment to add the block to. Without it, a new
  *               draft page is created, titled from the YAML "PageTitle".
- *   replace=1   Archive any slide show block with the same title on that page first.
- *   publish=1   Publish the block (and the page, if this task created it).
+ *   --replace (-r)  Archive any slide show block with the same title on that page first.
+ *   --publish (-P)  Publish the block (and the page, if this task created it).
  *
  * Example:
- *   vendor/bin/sake dev/tasks/slideshowblock-import "page=hosting&replace=1&publish=1"
+ *   vendor/bin/sake tasks:slideshowblock-import --page=hosting --replace --publish
  *
  * YAML format: see _content/ship-shape-hosting.yml. Keys are the field names
  * of the block, slide and item classes; "Type" picks the slide class
@@ -52,25 +49,32 @@ class SlideShowBlockImportTask extends BuildTask
     protected string $title = 'Slide show block: import from YAML';
 
     protected static string $description = 'Creates a slide show block with all its slides and items from a YAML file. '
-        . 'Options: file, page, replace=1, publish=1.';
+        . 'Options: file, page, replace, publish.';
 
     private static $default_file = 'app/_content/mycontent.yml';
 
     /** @var string[] */
     private array $warnings = [];
 
+    private ?PolyOutput $output = null;
+
     protected function execute(InputInterface $input, PolyOutput $output): int
     {
+        $this->output = $output;
+        $this->warnings = [];
+
         $fileLocation = (string) ($input->getOption('file') ?: static::config()->get('default_file'));
+        // @TODO (SS6 upgrade) this line overrides the "file" option (kept from the original code).
         $fileLocation = 'app/_content/ship-shape-hosting.yml';
 
         $file = $this->resolveFile($fileLocation);
         if ($file === null) {
-            $file = file_get_contents(Director::baseFolder() . '/' . $fileLocation);
+            // @TODO (SS6 upgrade) this returns file contents, not a path (kept from the original code).
+            $file = file_get_contents(Path::join(BASE_PATH, $fileLocation));
             if (! $file) {
                 $this->say('Could not find the YAML file. Check the "file" option.', 'error');
 
-                return;
+                return Command::FAILURE;
             }
         }
 
@@ -79,18 +83,18 @@ class SlideShowBlockImportTask extends BuildTask
         if (!is_array($data) || empty($data['Slides']) || !is_array($data['Slides'])) {
             $this->say('The YAML file needs a "Slides" list.', 'error');
 
-            return;
+            return Command::FAILURE;
         }
 
         $publish = (bool) $input->getOption('publish');
         [$page, $pageIsNew] = $this->findOrCreatePage((string) $input->getOption('page'), $data);
         if (!$page) {
-            return;
+            return Command::FAILURE;
         }
 
         $area = $this->elementalAreaFor($page);
         if (!$area instanceof ElementalArea) {
-            return;
+            return Command::FAILURE;
         }
 
         $blockTitle = (string) ($data['Title'] ?? 'Slide show');
@@ -117,14 +121,13 @@ class SlideShowBlockImportTask extends BuildTask
                 $this->say('Published the new page', 'created');
             }
         } else {
-            $this->say('Saved as draft. Add publish=1 to publish.');
+            $this->say('Saved as draft. Add --publish to publish.');
         }
 
         foreach ($this->warnings as $warning) {
             $this->say($warning, 'error');
         }
 
-        $this->say('Done.');
         return Command::SUCCESS;
     }
 
@@ -279,7 +282,7 @@ class SlideShowBlockImportTask extends BuildTask
             return $spec;
         }
 
-        $local = Path::join(Director::baseFolder(), $spec);
+        $local = Path::join(BASE_PATH, $spec);
         if (is_file($local)) {
             return $local;
         }
@@ -300,17 +303,16 @@ class SlideShowBlockImportTask extends BuildTask
 
     protected function say(string $message, string $type = ''): void
     {
-        if (Director::is_cli()) {
-            DB::alteration_message($message, $type);
-
-            return;
-        }
-
-        DB::alteration_message(Convert::raw2xml($message), $type);
+        $this->output?->writeln($message);
     }
 
     public function getOptions(): array
     {
-        return [new InputOption('file', null, InputOption::VALUE_NONE, 'do something specific'), new InputOption('publish', null, InputOption::VALUE_NONE, 'do something specific'), new InputOption('page', null, InputOption::VALUE_NONE, 'do something specific'), new InputOption('replace', null, InputOption::VALUE_NONE, 'do something specific')];
+        return [
+            new InputOption('file', 'f', InputOption::VALUE_REQUIRED, 'YAML file: "vendor/module:path/file.yml", a path relative to the project root, or an absolute path'),
+            new InputOption('page', 'p', InputOption::VALUE_REQUIRED, 'Page ID or URLSegment to add the block to (a new draft page is created without it)'),
+            new InputOption('replace', 'r', InputOption::VALUE_NONE, 'Archive any slide show block with the same title on that page first'),
+            new InputOption('publish', 'P', InputOption::VALUE_NONE, 'Publish the block (and the page, if this task created it)'),
+        ];
     }
 }
