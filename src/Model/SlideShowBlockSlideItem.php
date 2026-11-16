@@ -125,7 +125,7 @@ class SlideShowBlockSlideItem extends DataObject
     public function canEdit($member = null)
     {
         $slide = $this->getOwnerSlide();
-        if ($slide) {
+        if ($slide instanceof SlideShowBlockSlide) {
             return $slide->canEdit($member);
         }
 

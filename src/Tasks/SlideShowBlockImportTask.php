@@ -59,6 +59,7 @@ class SlideShowBlockImportTask extends BuildTask
     {
         $fileLocation = (string) ($request->getVar('file') ?: static::config()->get('default_file'));
         $fileLocation = 'app/_content/ship-shape-hosting.yml';
+
         $file = $this->resolveFile($fileLocation);
         if ($file === null) {
             $file = file_get_contents(Director::baseFolder() . '/' . $fileLocation);
@@ -68,6 +69,7 @@ class SlideShowBlockImportTask extends BuildTask
                 return;
             }
         }
+
         $this->say('Reading ' . $file);
 
         $data = Yaml::parseFile($file);
@@ -84,7 +86,7 @@ class SlideShowBlockImportTask extends BuildTask
         }
 
         $area = $this->elementalAreaFor($page);
-        if (!$area) {
+        if (!$area instanceof ElementalArea) {
             return;
         }
 
@@ -119,6 +121,7 @@ class SlideShowBlockImportTask extends BuildTask
         foreach ($this->warnings as $warning) {
             $this->say($warning, 'error');
         }
+
         $this->say('Done.');
     }
 
@@ -148,6 +151,7 @@ class SlideShowBlockImportTask extends BuildTask
                 $item->Sort = $i + 1;
                 $item->write();
             }
+
             $counts[] = count((array) $rows) . ($list === 'Items' ? ' items' : ' extra items');
         }
 
@@ -169,6 +173,7 @@ class SlideShowBlockImportTask extends BuildTask
             if (in_array($field, $skip, true)) {
                 continue;
             }
+
             if (!$record->hasDatabaseField($field)) {
                 $this->warnings[] = trim(sprintf(
                     '%s: "%s" is not a field on %s, ignored.',
@@ -178,6 +183,7 @@ class SlideShowBlockImportTask extends BuildTask
                 ), ': ');
                 continue;
             }
+
             $record->$field = is_string($value) ? rtrim($value, "\n") : $value;
         }
     }
@@ -187,9 +193,10 @@ class SlideShowBlockImportTask extends BuildTask
         if ($type === '') {
             return null;
         }
+
         $candidates = [
             $type,
-            'Sunnysideup\\SlideShowBlock\\Slides\\SlideShowBlockSlide' . $type,
+            SlideShowBlockSlide::class . $type,
         ];
         foreach ($candidates as $class) {
             if (class_exists($class) && is_subclass_of($class, SlideShowBlockSlide::class)) {
@@ -208,7 +215,7 @@ class SlideShowBlockImportTask extends BuildTask
         if ($pageRef !== '') {
             $page = ctype_digit($pageRef)
                 ? SiteTree::get()->byID((int) $pageRef)
-                : SiteTree::get()->filter('URLSegment', $pageRef)->first();
+                : SiteTree::get()->filter(['URLSegment' => $pageRef])->first();
             if (!$page) {
                 $this->say(sprintf('No page found for "%s".', $pageRef), 'error');
 
@@ -264,6 +271,7 @@ class SlideShowBlockImportTask extends BuildTask
         if ($spec === '') {
             return null;
         }
+
         if (is_file($spec)) {
             return $spec;
         }
@@ -274,7 +282,7 @@ class SlideShowBlockImportTask extends BuildTask
         }
 
         if (str_contains($spec, ':')) {
-            [$moduleName, $relative] = array_map('trim', explode(':', $spec, 2));
+            [$moduleName, $relative] = array_map(trim(...), explode(':', $spec, 2));
             $module = ModuleLoader::getModule($moduleName);
             if ($module) {
                 $path = $module->getResource($relative)->getPath();
@@ -294,6 +302,7 @@ class SlideShowBlockImportTask extends BuildTask
 
             return;
         }
+
         DB::alteration_message(Convert::raw2xml($message), $type);
     }
 }

@@ -12,7 +12,6 @@ use SilverStripe\Forms\GridField\GridFieldAddNewButton;
 use SilverStripe\Forms\GridField\GridFieldConfig_RecordEditor;
 use SilverStripe\Forms\LiteralField;
 use SilverStripe\ORM\HasManyList;
-use SilverStripe\View\Requirements;
 use Sunnysideup\SlideShowBlock\Slides\SlideShowBlockSlide;
 use Symbiote\GridFieldExtensions\GridFieldAddNewMultiClass;
 use Symbiote\GridFieldExtensions\GridFieldOrderableRows;
@@ -147,8 +146,10 @@ class SlideShowBlock extends BaseElement
             if (!is_a($class, SlideShowBlockSlide::class, true) || $class === SlideShowBlockSlide::class) {
                 continue;
             }
+
             $options[$class] = $class::singleton()->i18n_singular_name();
         }
+
         asort($options);
 
         return $options;

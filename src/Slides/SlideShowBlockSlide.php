@@ -160,7 +160,7 @@ class SlideShowBlockSlide extends DataObject
             }
 
             $hiddenFields = (array) static::config()->get('hidden_fields');
-            if ($hiddenFields) {
+            if ($hiddenFields !== []) {
                 $fields->removeByName((array) $hiddenFields);
             }
 
@@ -181,6 +181,7 @@ class SlideShowBlockSlide extends DataObject
         if ($columns === []) {
             return;
         }
+
         $title = (string) static::config()->get($configPrefix . '_title') ?: $relation;
 
         if (!$this->isInDB()) {
@@ -227,8 +228,7 @@ class SlideShowBlockSlide extends DataObject
     {
         parent::onBeforeWrite();
         if (!$this->Sort && $this->SlideShowBlockID) {
-            $this->Sort = (int) static::get()
-                ->filter('SlideShowBlockID', $this->SlideShowBlockID)
+            $this->Sort = (int) static::get()->filter(['SlideShowBlockID' => $this->SlideShowBlockID])
                 ->max('Sort') + 1;
         }
     }
