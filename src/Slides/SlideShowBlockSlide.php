@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Sunnysideup\SlideShowBlock\Slides;
 
+use SilverStripe\Forms\FormField;
 use SilverStripe\Core\Convert;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\GridField\GridField;
@@ -141,7 +142,7 @@ class SlideShowBlockSlide extends DataObject
             $fields->removeByName(['SlideShowBlockID', 'Sort', 'Items', 'ExtraItems']);
 
             $heading = $fields->dataFieldByName('Heading');
-            if ($heading) {
+            if ($heading instanceof FormField) {
                 $heading->setDescription(
                     _t(self::class . '.HeadingHelp', 'Wrap words in *asterisks* to highlight them.')
                 );
