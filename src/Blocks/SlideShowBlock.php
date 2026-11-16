@@ -34,7 +34,7 @@ class SlideShowBlock extends BaseElement
 
     private static $plural_name = 'Slide shows';
 
-    private static $description = 'A swipeable deck of slides that tells a story.';
+    private static $class_description = 'A swipeable deck of slides that tells a story.';
 
     private static $icon = 'font-icon-block-carousel';
 

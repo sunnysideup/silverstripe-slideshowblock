@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace Sunnysideup\SlideShowBlock\Tasks;
 
+use Symfony\Component\Console\Input\InputInterface;
+use SilverStripe\PolyExecution\PolyOutput;
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputOption;
 use DNADesign\Elemental\Extensions\ElementalPageExtension;
 use DNADesign\Elemental\Models\BaseElement;
 use DNADesign\Elemental\Models\ElementalArea;
@@ -43,11 +47,11 @@ use Symfony\Component\Yaml\Yaml;
  */
 class SlideShowBlockImportTask extends BuildTask
 {
-    private static $segment = 'slideshowblock-import';
+    protected static string $commandName = 'slideshowblock-import';
 
-    protected $title = 'Slide show block: import from YAML';
+    protected string $title = 'Slide show block: import from YAML';
 
-    protected $description = 'Creates a slide show block with all its slides and items from a YAML file. '
+    protected static string $description = 'Creates a slide show block with all its slides and items from a YAML file. '
         . 'Options: file, page, replace=1, publish=1.';
 
     private static $default_file = 'app/_content/mycontent.yml';
@@ -55,11 +59,10 @@ class SlideShowBlockImportTask extends BuildTask
     /** @var string[] */
     private array $warnings = [];
 
-    public function run($request)
+    protected function execute(InputInterface $input, PolyOutput $output): int
     {
-        $fileLocation = (string) ($request->getVar('file') ?: static::config()->get('default_file'));
+        $fileLocation = (string) ($input->getOption('file') ?: static::config()->get('default_file'));
         $fileLocation = 'app/_content/ship-shape-hosting.yml';
-
         $file = $this->resolveFile($fileLocation);
         if ($file === null) {
             $file = file_get_contents(Director::baseFolder() . '/' . $fileLocation);
@@ -69,32 +72,26 @@ class SlideShowBlockImportTask extends BuildTask
                 return;
             }
         }
-
         $this->say('Reading ' . $file);
-
         $data = Yaml::parseFile($file);
         if (!is_array($data) || empty($data['Slides']) || !is_array($data['Slides'])) {
             $this->say('The YAML file needs a "Slides" list.', 'error');
 
             return;
         }
-
-        $publish = (bool) $request->getVar('publish');
-        [$page, $pageIsNew] = $this->findOrCreatePage((string) $request->getVar('page'), $data);
+        $publish = (bool) $input->getOption('publish');
+        [$page, $pageIsNew] = $this->findOrCreatePage((string) $input->getOption('page'), $data);
         if (!$page) {
             return;
         }
-
         $area = $this->elementalAreaFor($page);
         if (!$area instanceof ElementalArea) {
             return;
         }
-
         $blockTitle = (string) ($data['Title'] ?? 'Slide show');
-        if ($request->getVar('replace')) {
+        if ($input->getOption('replace')) {
             $this->archiveExisting($area, $blockTitle);
         }
-
         $block = SlideShowBlock::create();
         $this->assign($block, $data, ['Slides', 'PageTitle']);
         $block->Title = $blockTitle;
@@ -102,11 +99,9 @@ class SlideShowBlockImportTask extends BuildTask
         $block->Sort = (int) $area->Elements()->max('Sort') + 1;
         $block->write();
         $this->say(sprintf('Created block "%s" (#%d) on page "%s"', $blockTitle, $block->ID, $page->Title), 'created');
-
         foreach (array_values($data['Slides']) as $index => $slideData) {
             $this->createSlide($block, (array) $slideData, $index + 1);
         }
-
         if ($publish) {
             $block->publishRecursive();
             $this->say('Published the block and all of its slides', 'created');
@@ -117,12 +112,11 @@ class SlideShowBlockImportTask extends BuildTask
         } else {
             $this->say('Saved as draft. Add publish=1 to publish.');
         }
-
         foreach ($this->warnings as $warning) {
             $this->say($warning, 'error');
         }
-
         $this->say('Done.');
+        return Command::SUCCESS;
     }
 
     protected function createSlide(SlideShowBlock $block, array $data, int $sort): void
@@ -304,5 +298,9 @@ class SlideShowBlockImportTask extends BuildTask
         }
 
         DB::alteration_message(Convert::raw2xml($message), $type);
+    }
+    public function getOptions(): array
+    {
+        return [new InputOption('file', null, InputOption::VALUE_NONE, 'do something specific'), new InputOption('publish', null, InputOption::VALUE_NONE, 'do something specific'), new InputOption('page', null, InputOption::VALUE_NONE, 'do something specific'), new InputOption('replace', null, InputOption::VALUE_NONE, 'do something specific')];
     }
 }
