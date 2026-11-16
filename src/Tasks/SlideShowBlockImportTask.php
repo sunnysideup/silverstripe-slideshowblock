@@ -63,6 +63,7 @@ class SlideShowBlockImportTask extends BuildTask
     {
         $fileLocation = (string) ($input->getOption('file') ?: static::config()->get('default_file'));
         $fileLocation = 'app/_content/ship-shape-hosting.yml';
+
         $file = $this->resolveFile($fileLocation);
         if ($file === null) {
             $file = file_get_contents(Director::baseFolder() . '/' . $fileLocation);
@@ -72,6 +73,7 @@ class SlideShowBlockImportTask extends BuildTask
                 return;
             }
         }
+
         $this->say('Reading ' . $file);
         $data = Yaml::parseFile($file);
         if (!is_array($data) || empty($data['Slides']) || !is_array($data['Slides'])) {
@@ -79,19 +81,23 @@ class SlideShowBlockImportTask extends BuildTask
 
             return;
         }
+
         $publish = (bool) $input->getOption('publish');
         [$page, $pageIsNew] = $this->findOrCreatePage((string) $input->getOption('page'), $data);
         if (!$page) {
             return;
         }
+
         $area = $this->elementalAreaFor($page);
         if (!$area instanceof ElementalArea) {
             return;
         }
+
         $blockTitle = (string) ($data['Title'] ?? 'Slide show');
         if ($input->getOption('replace')) {
             $this->archiveExisting($area, $blockTitle);
         }
+
         $block = SlideShowBlock::create();
         $this->assign($block, $data, ['Slides', 'PageTitle']);
         $block->Title = $blockTitle;
@@ -102,6 +108,7 @@ class SlideShowBlockImportTask extends BuildTask
         foreach (array_values($data['Slides']) as $index => $slideData) {
             $this->createSlide($block, (array) $slideData, $index + 1);
         }
+
         if ($publish) {
             $block->publishRecursive();
             $this->say('Published the block and all of its slides', 'created');
@@ -112,9 +119,11 @@ class SlideShowBlockImportTask extends BuildTask
         } else {
             $this->say('Saved as draft. Add publish=1 to publish.');
         }
+
         foreach ($this->warnings as $warning) {
             $this->say($warning, 'error');
         }
+
         $this->say('Done.');
         return Command::SUCCESS;
     }
@@ -299,6 +308,7 @@ class SlideShowBlockImportTask extends BuildTask
 
         DB::alteration_message(Convert::raw2xml($message), $type);
     }
+
     public function getOptions(): array
     {
         return [new InputOption('file', null, InputOption::VALUE_NONE, 'do something specific'), new InputOption('publish', null, InputOption::VALUE_NONE, 'do something specific'), new InputOption('page', null, InputOption::VALUE_NONE, 'do something specific'), new InputOption('replace', null, InputOption::VALUE_NONE, 'do something specific')];
