@@ -52,6 +52,7 @@ class SlideShowBlockIcons
         foreach ((array) static::config()->get('icons') as $key => $icon) {
             $options[$key] = $icon['label'] ?? $key;
         }
+
         asort($options);
 
         return $options;

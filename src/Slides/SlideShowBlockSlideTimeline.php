@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Sunnysideup\SlideShowBlock\Slides;
 
-use SilverStripe\ORM\ArrayList;
+use SilverStripe\Model\List\ArrayList;
 
 /**
  * Horizontal bars, scaled to the largest "Length" value.
